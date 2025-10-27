@@ -2,13 +2,8 @@
 import { GoogleGenAI, Type, Chat } from "@google/genai";
 import type { TestResult, UserProfile, Vitals, FoodData, AIReport } from '../types';
 
-declare var process: {
-  env: {
-    API_KEY: string;
-  }
-};
-
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// API Key configured directly
+const ai = new GoogleGenAI({ apiKey: 'AIzaSyA2TN2B7PJGG-0NeYOVfIqzHJRDVU3RjwM' });
 const model = 'gemini-2.5-flash';
 
 export const getFoodAnalysis = async (base64Data: string, healthContext: string): Promise<FoodData> => {
