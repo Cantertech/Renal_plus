@@ -28,7 +28,7 @@ import AIReportScreen from './components/main/AIReportScreen';
 
 function App() {
     const [view, setView] = useState('home');
-    const [authView, setAuthView] = useState('auth'); 
+    const [authView, setAuthView] = useState('auth');
     const [language, setLanguageState] = useState<Language>('en');
     const [history, setHistory] = useState<TestResult[]>([]);
     const [recentResult, setRecentResult] = useState<TestResult | null>(null);
@@ -37,7 +37,7 @@ function App() {
     const [currentFoodData, setCurrentFoodData] = useState<FoodData | null>(null);
     const [aiReport, setAiReport] = useState<AIReport | null>(null);
     const [aiReportError, setAiReportError] = useState('');
-    
+
     const [user, setUser] = useState<DummyUser | null | undefined>(undefined);
     const appId = 'renal-plus-default';
 
@@ -45,16 +45,16 @@ function App() {
     useEffect(() => {
         const storedUser = localStorage.getItem('renal_plus_user');
         if (storedUser) {
-        try {
+            try {
                 setUser(JSON.parse(storedUser));
             } catch (e) {
-                setUser(null); 
+                setUser(null);
             }
         } else {
-          setUser(null);
+            setUser(null);
         }
     }, []);
-    
+
     // Load language from localStorage
     useEffect(() => {
         const storedLang = localStorage.getItem('renal_plus_language');
@@ -77,10 +77,10 @@ function App() {
                 setHistory([]);
             }
         } else {
-            setHistory([]); 
+            setHistory([]);
         }
     }, [user]);
-    
+
     const setLanguage = (langCode: Language) => {
         setLanguageState(langCode);
         localStorage.setItem('renal_plus_language', langCode);
@@ -91,17 +91,17 @@ function App() {
         setRecentResult(resultWithTimestamp);
         const newHistory = [resultWithTimestamp, ...history].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
         setHistory(newHistory);
-        
+
         if (user) {
             localStorage.setItem(`renal_plus_history_${user.uid}`, JSON.stringify(newHistory));
         }
     };
-    
+
     const handleFoodAnalyzed = (foodData: FoodData) => {
         setCurrentFoodData(foodData);
     };
 
-     const generateAIReport = async () => {
+    const generateAIReport = async () => {
         if (!user) return;
         setView('aiReport');
         setAiReport(null);
@@ -114,7 +114,7 @@ function App() {
 
             // Get latest test from history
             const latestTest: TestResult | null = history.length > 0 ? history[0] : null;
-            
+
             if (!latestVitals || !latestTest) {
                 const missingData = [];
                 if (!latestVitals) missingData.push("vitals");
@@ -156,7 +156,7 @@ function App() {
         // Dummy login - check localStorage for users
         const storedUsers = localStorage.getItem('renal_plus_users');
         const users = storedUsers ? JSON.parse(storedUsers) : {};
-        
+
         if (users[email] && users[email].password === password) {
             const userData: DummyUser = {
                 uid: users[email].uid,
@@ -168,18 +168,18 @@ function App() {
             localStorage.setItem('renal_plus_user', JSON.stringify(userData));
             return Promise.resolve();
         }
-        
+
         return Promise.reject(new Error('Invalid email or password'));
     };
 
     const handleSignUp = async (formData: any) => {
         const storedUsers = localStorage.getItem('renal_plus_users');
         const users = storedUsers ? JSON.parse(storedUsers) : {};
-        
+
         if (users[formData.email]) {
             throw new Error('User already exists');
         }
-        
+
         const uid = `user_${Date.now()}`;
         users[formData.email] = {
             uid,
@@ -190,17 +190,17 @@ function App() {
             conditions: formData.conditions
         };
         localStorage.setItem('renal_plus_users', JSON.stringify(users));
-       
-       const userProfile: UserProfile = {
+
+        const userProfile: UserProfile = {
             uid: uid,
-          name: formData.name,
-          age: formData.age || null,
-          gender: formData.gender,
-          conditions: formData.conditions,
-          createdAt: new Date().toISOString(),
-       };
+            name: formData.name,
+            age: formData.age || null,
+            gender: formData.gender,
+            conditions: formData.conditions,
+            createdAt: new Date().toISOString(),
+        };
         localStorage.setItem(`renal_plus_profile_${uid}`, JSON.stringify(userProfile));
-        
+
         const newUser: DummyUser = {
             uid: uid,
             email: formData.email,
@@ -210,7 +210,7 @@ function App() {
         setUser(newUser);
         localStorage.setItem('renal_plus_user', JSON.stringify(newUser));
     };
-    
+
     const handleSignOut = () => {
         setUser(null);
         localStorage.removeItem('renal_plus_user');
@@ -218,18 +218,18 @@ function App() {
 
     const t = translations[language] || translations.en;
 
-    if (user === undefined) { 
-      return <div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div></div>;
+    if (user === undefined) {
+        return <div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div></div>;
     }
-    
+
     const renderAuthView = () => {
-      switch (authView) {
-        case 'login': return <LoginScreen t={t} setView={setAuthView} onLogin={handleLogin} />;
-        case 'signup': return <SignUpScreen t={t} setView={setAuthView} onSignUp={handleSignUp} />;
+        switch (authView) {
+            case 'login': return <LoginScreen t={t} setView={setAuthView} onLogin={handleLogin} />;
+            case 'signup': return <SignUpScreen t={t} setView={setAuthView} onSignUp={handleSignUp} />;
             case 'auth': default: return <AuthScreen t={t} setView={setAuthView} onGuestLogin={handleGuestLogin} isOnline={true} />;
-      }
+        }
     };
-    
+
     const appServices = { user, appId };
 
     const renderMainApp = () => {
@@ -255,29 +255,38 @@ function App() {
     };
 
     const navItems = [
-        { name: 'home', label: t.home, icon: "M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" },
-        { name: 'wellness', label: t.wellness, icon: "M12.012 2.25a.75.75 0 01.75.75v.006a14.25 14.25 0 010 18.019v.005a.75.75 0 01-1.5 0v-.005a12.75 12.75 0 000-16.02V3a.75.75 0 01.75-.75zM16.5 4.503a.75.75 0 010 1.06l-1.06 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zM7.5 18.497a.75.75 0 010-1.06l1.06-1.06a.75.75 0 111.06 1.06l-1.06 1.06a.75.75 0 01-1.06 0z" },
-        { name: 'consult', label: t.consult, icon: "M8.25 4.5a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM14.25 8.625a3.375 3.375 0 00-3.375-3.375H12A3.375 3.375 0 008.625 8.625v1.687c0 .414.336.75.75.75h3.75a.75.75 0 00.75-.75v-1.687zM5.25 12.375a3.75 3.75 0 013.75-3.75h.75a3.75 3.75 0 013.75 3.75v.938c0 .414.336.75.75.75h.75a.75.75 0 00.75-.75v-.938a5.25 5.25 0 00-5.25-5.25h-.75a5.25 5.25 0 00-5.25 5.25v.938c0 .414.336.75.75.75h.75a.75.75 0 00.75-.75v-.938z" },
-        { name: 'games', label: t.games, icon: "M10.894 2.106a.75.75 0 01.812 1.212l-1.832 2.442a.75.75 0 01-1.212-.812L10.5 2.274a.75.75 0 01.394-.168zM5.25 7.5a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 015.25 7.5zM7.058 14.942a.75.75 0 011.212-.812l2.442-1.832a.75.75 0 01.812 1.212l-2.442 1.832a.75.75 0 01-1.212-.812zM15.75 7.5a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5a.75.75 0 01.75-.75zM14.942 16.942a.75.75 0 01-.812-1.212l1.832-2.442a.75.75 0 011.212.812l-1.832 2.442a.75.75 0 01-.4-.168zM18.75 11.25a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5a.75.75 0 01.75-.75zM16.942 5.058a.75.75 0 01.812 1.212l-2.442 1.832a.75.75 0 01-1.212-.812l2.442-1.832a.75.75 0 01.4-.168zM4.5 11.25a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 014.5 11.25z" },
-        { name: 'profile', label: t.profile, icon: "M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A1.75 1.75 0 0117.749 22H6.251a1.75 1.75 0 01-1.75-1.882z" },
+        { name: 'home', label: t.home, icon: "M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" },
+        { name: 'wellness', label: t.wellness, icon: "M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" },
+        { name: 'consult', label: t.consult, icon: "M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" },
+        { name: 'games', label: t.games, icon: "M14.6 9a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-1.5 0v-3A.75.75 0 0 1 14.6 9ZM13.85 13.5a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-1.5 0v-3a.75.75 0 0 1 .75-.75ZM9.35 13.5a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-1.5 0v-3a.75.75 0 0 1 .75-.75ZM8.6 9a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-1.5 0v-3A.75.75 0 0 1 8.6 9ZM11.6 6a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-1.5 0v-3A.75.75 0 0 1 11.6 6ZM11.6 16.5a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-1.5 0v-3a.75.75 0 0 1 .75-.75Z" },
+        { name: 'profile', label: t.profile, icon: "M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" },
     ];
 
     const isGameView = view === 'kidneyRunnerGame' || view === 'hydrationHeroGame';
 
     return (
-        <div className="font-sans antialiased h-screen w-screen bg-gray-100 flex flex-col max-w-md mx-auto shadow-2xl">
-            <main className="flex-1 overflow-y-auto relative">
+        <div className="font-sans antialiased h-screen w-screen bg-gray-50 flex flex-col max-w-md mx-auto shadow-2xl sm:rounded-3xl overflow-hidden border border-gray-200 my-0 sm:my-4">
+            <main className="flex-1 overflow-y-auto relative bg-gray-50 scrollbar-hide">
                 {user ? renderMainApp() : renderAuthView()}
             </main>
             {user && !isGameView && (
-              <nav className="flex justify-around items-center bg-white border-t border-gray-200 shadow-inner h-16">
-                  {navItems.map(item => (
-                      <button key={item.name} onClick={() => setView(item.name)} className={`flex flex-col items-center justify-center w-full h-full text-sm transition-colors ${view === item.name ? 'text-blue-500' : 'text-gray-500 hover:text-blue-500'}`}>
-                          <Icon path={item.icon} className="w-6 h-6 mb-1" />
-                          <span>{item.label}</span>
-                      </button>
-                  ))}
-              </nav>
+                <nav className="flex justify-around items-center bg-white/90 backdrop-blur-lg border-t border-gray-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] h-20 pb-2 rounded-t-2xl">
+                    {navItems.map(item => {
+                        const isActive = view === item.name;
+                        return (
+                            <button
+                                key={item.name}
+                                onClick={() => setView(item.name)}
+                                className={`flex flex-col items-center justify-center w-full h-full transition-all duration-300 ${isActive ? 'text-blue-600 scale-105' : 'text-gray-400 hover:text-blue-400'}`}
+                            >
+                                <div className={`p-1.5 rounded-xl transition-colors ${isActive ? 'bg-blue-50' : 'bg-transparent'}`}>
+                                    <Icon path={item.icon} className={`w-6 h-6 ${isActive ? 'stroke-2' : 'stroke-1.5'}`} />
+                                </div>
+                                <span className={`text-[10px] font-medium mt-1 ${isActive ? 'opacity-100' : 'opacity-70'}`}>{item.label}</span>
+                            </button>
+                        );
+                    })}
+                </nav>
             )}
         </div>
     );
