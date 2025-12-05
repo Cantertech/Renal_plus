@@ -3,7 +3,7 @@ import { GoogleGenAI, Type, Chat } from "@google/genai";
 import type { TestResult, UserProfile, Vitals, FoodData, AIReport } from '../types';
 
 // API Key configured via environment variables
-const apiKey = import.meta.env.VITE_GOOGLE_AI_API_KEY || 'AIzaSyA2TN2B7PJGG-0NeYOVfIqzHJRDVU3RjwM'; // Fallback for dev/demo if env var missing
+const apiKey = import.meta.env.VITE_GOOGLE_AI_API_KEY; // Fallback for dev/demo if env var missing
 const ai = new GoogleGenAI({ apiKey });
 const model = 'gemini-2.5-flash';
 

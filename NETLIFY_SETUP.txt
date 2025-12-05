@@ -6,8 +6,8 @@ Your app is now ready to deploy to Netlify!
 
 IMPORTANT: Add this environment variable in Netlify Dashboard:
 
-    Key: GEMINI_API_KEY
-    Value: AIzaSyA2TN2B7PJGG-0NeYOVfIqzHJRDVU3RjwM
+    Key: VITE_GOOGLE_AI_API_KEY
+    Value: [Your API Key]
 
 =============================================================================
 HOW TO DEPLOY:
@@ -24,7 +24,7 @@ HOW TO DEPLOY:
    - Publish directory: dist
 
 5. Click "Advanced" → "New variable"
-   - Add the GEMINI_API_KEY with the value above
+   - Add the VITE_GOOGLE_AI_API_KEY with the value above
 
 6. Click "Deploy site"
 

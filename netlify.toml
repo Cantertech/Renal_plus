@@ -13,5 +13,5 @@
 # Environment variables for Netlify
 # Add your GEMINI_API_KEY in Netlify Dashboard → Site settings → Environment variables
 # Key: GEMINI_API_KEY
-# Value: AIzaSyA2TN2B7PJGG-0NeYOVfIqzHJRDVU3RjwM
+# Value: [Your API Key]
 

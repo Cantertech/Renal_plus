@@ -2,7 +2,7 @@
 
 ## ✅ Your API Key is Configured!
 
-**API Key:** `AIzaSyA2TN2B7PJGG-0NeYOVfIqzHJRDVU3RjwM`
+**API Key:** `[Your API Key]`
 
 ---
 
@@ -41,8 +41,8 @@ git push -u origin main
    - **Publish directory:** `dist`
 
 5. **Click "Show advanced" → Add environment variable:**
-   - **Key:** `GEMINI_API_KEY`
-   - **Value:** `AIzaSyA2TN2B7PJGG-0NeYOVfIqzHJRDVU3RjwM`
+   - **Key:** `VITE_GOOGLE_AI_API_KEY`
+   - **Value:** `[Your API Key]`
 
 6. **Click "Deploy site"**
 
@@ -61,7 +61,7 @@ netlify login
 netlify deploy --prod
 
 # Set environment variable
-netlify env:set GEMINI_API_KEY AIzaSyA2TN2B7PJGG-0NeYOVfIqzHJRDVU3RjwM
+netlify env:set VITE_GOOGLE_AI_API_KEY [Your API Key]
 
 # Redeploy with the new environment variable
 netlify deploy --prod
@@ -99,8 +99,8 @@ After deploying, you can update environment variables by:
 3. Go to **"Environment variables"**
 4. Click **"Add a variable"**
 5. Add:
-   - **Key:** `GEMINI_API_KEY`
-   - **Value:** `AIzaSyA2TN2B7PJGG-0NeYOVfIqzHJRDVU3RjwM`
+   - **Key:** `VITE_GOOGLE_AI_API_KEY`
+   - **Value:** `[Your API Key]`
 6. Click **"Save"**
 7. Trigger a new deployment
 
