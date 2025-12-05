@@ -2,8 +2,9 @@
 import { GoogleGenAI, Type, Chat } from "@google/genai";
 import type { TestResult, UserProfile, Vitals, FoodData, AIReport } from '../types';
 
-// API Key configured directly
-const ai = new GoogleGenAI({ apiKey: 'AIzaSyA2TN2B7PJGG-0NeYOVfIqzHJRDVU3RjwM' });
+// API Key configured via environment variables
+const apiKey = import.meta.env.VITE_GOOGLE_AI_API_KEY || 'AIzaSyA2TN2B7PJGG-0NeYOVfIqzHJRDVU3RjwM'; // Fallback for dev/demo if env var missing
+const ai = new GoogleGenAI({ apiKey });
 const model = 'gemini-2.5-flash';
 
 export const getFoodAnalysis = async (base64Data: string, healthContext: string): Promise<FoodData> => {
@@ -83,54 +84,54 @@ export const getMealPlan = async (preferences: string) => {
 
 
 export const generateHealthReport = async (latestTest: TestResult, latestVitals: Vitals, userProfile: UserProfile | null): Promise<AIReport> => {
-    let prompt = `Analyze the following health data for a user in Ghana and provide a concise health report. User Profile: ${userProfile ? `Age ${userProfile.age}, Gender ${userProfile.gender}, Conditions: ${userProfile.conditions.join(', ') || 'None'}` : 'Guest User'}. `;
-    prompt += `Latest Test Result (${new Date(latestTest.timestamp).toLocaleDateString()}): Status - ${latestTest.status}, Biomarkers - ${JSON.stringify(latestTest.biomarkers)}. `;
-    prompt += `Latest Vitals (${new Date(latestVitals.timestamp).toLocaleDateString()}): BP - ${latestVitals.systolic}/${latestVitals.diastolic} mmHg, Glucose - ${latestVitals.glucose} mg/dL, BMI - ${latestVitals.bmi}. `;
-    prompt += `Generate a JSON response with keys "summary" (string, overall status), "observations" (array of strings, 2-3 key points), and "recommendations" (array of strings, 2-3 actionable, simple tips relevant to Ghana). Keep explanations brief and easy to understand. Do not give medical advice, focus on lifestyle suggestions. Emphasize consulting a doctor if any concerns arise.`;
+  let prompt = `Analyze the following health data for a user in Ghana and provide a concise health report. User Profile: ${userProfile ? `Age ${userProfile.age}, Gender ${userProfile.gender}, Conditions: ${userProfile.conditions.join(', ') || 'None'}` : 'Guest User'}. `;
+  prompt += `Latest Test Result (${new Date(latestTest.timestamp).toLocaleDateString()}): Status - ${latestTest.status}, Biomarkers - ${JSON.stringify(latestTest.biomarkers)}. `;
+  prompt += `Latest Vitals (${new Date(latestVitals.timestamp).toLocaleDateString()}): BP - ${latestVitals.systolic}/${latestVitals.diastolic} mmHg, Glucose - ${latestVitals.glucose} mg/dL, BMI - ${latestVitals.bmi}. `;
+  prompt += `Generate a JSON response with keys "summary" (string, overall status), "observations" (array of strings, 2-3 key points), and "recommendations" (array of strings, 2-3 actionable, simple tips relevant to Ghana). Keep explanations brief and easy to understand. Do not give medical advice, focus on lifestyle suggestions. Emphasize consulting a doctor if any concerns arise.`;
 
-    const response = await ai.models.generateContent({
-        model,
-        contents: prompt,
-        config: {
-            responseMimeType: "application/json",
-            responseSchema: {
-                type: Type.OBJECT,
-                properties: {
-                    summary: { type: Type.STRING },
-                    observations: { type: Type.ARRAY, items: { type: Type.STRING } },
-                    recommendations: { type: Type.ARRAY, items: { type: Type.STRING } },
-                }
-            }
+  const response = await ai.models.generateContent({
+    model,
+    contents: prompt,
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: Type.OBJECT,
+        properties: {
+          summary: { type: Type.STRING },
+          observations: { type: Type.ARRAY, items: { type: Type.STRING } },
+          recommendations: { type: Type.ARRAY, items: { type: Type.STRING } },
         }
-    });
-    return JSON.parse(response.text);
+      }
+    }
+  });
+  return JSON.parse(response.text);
 };
 
 export const getVitalsAnalysis = async (latestVitals: Vitals, userProfile: UserProfile | null): Promise<string> => {
-    let prompt = `Analyze the following health vitals for a user in Ghana. User Profile: ${userProfile ? `Age ${userProfile.age}, Gender ${userProfile.gender}, Conditions: ${userProfile.conditions.join(', ') || 'None'}` : 'Guest User'}. `;
-    prompt += `Latest Vitals: BP - ${latestVitals.systolic}/${latestVitals.diastolic} mmHg, Glucose - ${latestVitals.glucose} mg/dL, BMI - ${latestVitals.bmi}. `;
-    prompt += `Provide a simple, one-paragraph analysis of these vitals. Explain what they might indicate for kidney health in an easy-to-understand way. Do not provide a medical diagnosis. Focus on encouragement and general lifestyle advice relevant to their situation. End by recommending a consultation with a doctor if there are any concerns.`;
+  let prompt = `Analyze the following health vitals for a user in Ghana. User Profile: ${userProfile ? `Age ${userProfile.age}, Gender ${userProfile.gender}, Conditions: ${userProfile.conditions.join(', ') || 'None'}` : 'Guest User'}. `;
+  prompt += `Latest Vitals: BP - ${latestVitals.systolic}/${latestVitals.diastolic} mmHg, Glucose - ${latestVitals.glucose} mg/dL, BMI - ${latestVitals.bmi}. `;
+  prompt += `Provide a simple, one-paragraph analysis of these vitals. Explain what they might indicate for kidney health in an easy-to-understand way. Do not provide a medical diagnosis. Focus on encouragement and general lifestyle advice relevant to their situation. End by recommending a consultation with a doctor if there are any concerns.`;
 
-    const response = await ai.models.generateContent({
-        model,
-        contents: prompt,
-    });
+  const response = await ai.models.generateContent({
+    model,
+    contents: prompt,
+  });
 
-    return response.text;
+  return response.text;
 };
 
 
 export const createChat = (): Chat => {
-    const systemInstruction = "You are 'Renal Care AI,' a friendly and supportive health assistant. Your purpose is to provide general health information and answer questions about kidney health, diet, and lifestyle relevant to Ghana. You are not a doctor and cannot provide medical advice, diagnose conditions, or interpret test results. If asked for medical advice, you must gently decline and recommend the user 'Consult a Doctor' using the app's feature. Respond in the language of the user's query (e.g., Twi or English).";
+  const systemInstruction = "You are 'Renal Care AI,' a friendly and supportive health assistant. Your purpose is to provide general health information and answer questions about kidney health, diet, and lifestyle relevant to Ghana. You are not a doctor and cannot provide medical advice, diagnose conditions, or interpret test results. If asked for medical advice, you must gently decline and recommend the user 'Consult a Doctor' using the app's feature. Respond in the language of the user's query (e.g., Twi or English).";
 
-    return ai.chats.create({
-        model,
-        config: {
-            systemInstruction,
-        },
-        history: [
-            { role: "user", parts: [{ text: "Hello." }] },
-            { role: "model", parts: [{ text: "Hello! I'm Renal Care AI, your health assistant. How can I help you with your kidney health questions today?" }] }
-        ]
-    });
+  return ai.chats.create({
+    model,
+    config: {
+      systemInstruction,
+    },
+    history: [
+      { role: "user", parts: [{ text: "Hello." }] },
+      { role: "model", parts: [{ text: "Hello! I'm Renal Care AI, your health assistant. How can I help you with your kidney health questions today?" }] }
+    ]
+  });
 };
