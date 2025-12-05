@@ -1,5 +1,5 @@
 {
-  "name": "Renal Plus mobile app",
+  "name": "Renal Care mobile app",
   "description": "A comprehensive mobile health application designed to assist users in managing and monitoring their kidney health. It allows users to scan urine test strips and food items for AI-powered analysis, track vitals, receive personalized meal plans, consult with specialists, and engage with educational games.",
   "requestFramePermissions": [
     "camera",

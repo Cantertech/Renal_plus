@@ -1,8 +1,8 @@
-# Deployment Guide for Renal Plus
+# Deployment Guide for Renal Care
 
 ## Deploying to Netlify
 
-This guide will walk you through deploying your Renal Plus app to Netlify.
+This guide will walk you through deploying your Renal Care app to Netlify.
 
 ### Step 1: Prepare Your Code
 

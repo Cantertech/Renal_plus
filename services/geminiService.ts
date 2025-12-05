@@ -46,7 +46,7 @@ export const getFoodAnalysis = async (base64Data: string, healthContext: string)
 
 export const getTestStripInsights = async (result: TestResult): Promise<string> => {
   const biomarkersText = Object.entries(result.biomarkers).map(([key, value]) => `${key}: ${value}`).join(', ');
-  const systemInstruction = "You are a health assistant for the Renal Plus app, speaking to a user in Ghana. Your tone should be simple, encouraging, and clear. Do not use complex medical jargon. Your goal is to explain results and suggest next steps without causing alarm or providing a medical diagnosis.";
+  const systemInstruction = "You are a health assistant for the Renal Care app, speaking to a user in Ghana. Your tone should be simple, encouraging, and clear. Do not use complex medical jargon. Your goal is to explain results and suggest next steps without causing alarm or providing a medical diagnosis.";
   const userQuery = `My kidney health test shows a result of "${result.status}". The specific biomarker readings are: ${biomarkersText}. Based on these results, explain in a simple paragraph what this might mean for me. Then, suggest 3 concrete, actionable next steps I can take, focusing on diet and lifestyle relevant to Ghana. End by strongly recommending I consult a healthcare professional.`;
 
   const response = await ai.models.generateContent({
@@ -121,7 +121,7 @@ export const getVitalsAnalysis = async (latestVitals: Vitals, userProfile: UserP
 
 
 export const createChat = (): Chat => {
-    const systemInstruction = "You are 'Renal Plus AI,' a friendly and supportive health assistant. Your purpose is to provide general health information and answer questions about kidney health, diet, and lifestyle relevant to Ghana. You are not a doctor and cannot provide medical advice, diagnose conditions, or interpret test results. If asked for medical advice, you must gently decline and recommend the user 'Consult a Doctor' using the app's feature. Respond in the language of the user's query (e.g., Twi or English).";
+    const systemInstruction = "You are 'Renal Care AI,' a friendly and supportive health assistant. Your purpose is to provide general health information and answer questions about kidney health, diet, and lifestyle relevant to Ghana. You are not a doctor and cannot provide medical advice, diagnose conditions, or interpret test results. If asked for medical advice, you must gently decline and recommend the user 'Consult a Doctor' using the app's feature. Respond in the language of the user's query (e.g., Twi or English).";
 
     return ai.chats.create({
         model,
@@ -130,7 +130,7 @@ export const createChat = (): Chat => {
         },
         history: [
             { role: "user", parts: [{ text: "Hello." }] },
-            { role: "model", parts: [{ text: "Hello! I'm Renal Plus AI, your health assistant. How can I help you with your kidney health questions today?" }] }
+            { role: "model", parts: [{ text: "Hello! I'm Renal Care AI, your health assistant. How can I help you with your kidney health questions today?" }] }
         ]
     });
 };

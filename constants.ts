@@ -9,8 +9,8 @@ export const mockDoctors: Doctor[] = [
 
 export const translations: Translations = {
   en: {
-    appName: "Renal Plus",
-    welcome: "Welcome to Renal Plus",
+    appName: "Renal Care",
+    welcome: "Welcome to Renal Care",
     welcomeSubtitle: "Your partner in proactive kidney health. Scan a test strip or food item to begin.",
     scanStrip: "Scan Test Strip",
     scanFood: "Scan Food Item",
@@ -199,8 +199,8 @@ export const translations: Translations = {
     playAudio: "Play",
   },
   tw: {
-    appName: "Renal Plus",
-    welcome: "Akwaaba kɔ Renal Plus",
+    appName: "Renal Care",
+    welcome: "Akwaaba kɔ Renal Care",
     welcomeSubtitle: "Wo hokafoɔ wɔ asaabo akwahosan mu. Fa test strip no scan anaa aduane bi na hyɛ aseɛ.",
     scanStrip: "Scan Test Strip",
     scanFood: "Scan Aduane",

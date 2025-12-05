@@ -1,4 +1,4 @@
-# Netlify Deployment Steps for Renal Plus
+# Netlify Deployment Steps for Renal Care
 
 ## ✅ Your API Key is Configured!
 

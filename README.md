@@ -1,4 +1,4 @@
-# Renal Plus - Kidney Health Mobile App
+# Renal Care - Kidney Health Mobile App
 
 A comprehensive kidney health monitoring application with AI-powered features.
 
